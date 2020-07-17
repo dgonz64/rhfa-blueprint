@@ -1,0 +1,62 @@
+{
+  "name": "rhfa-blueprint",
+  "version": "1.1.0",
+  "description": "Generate automatic forms following a schema using Blueprint",
+  "main": "lib/index.js",
+  "keywords": [
+    "react",
+    "reactjs",
+    "hooks",
+    "react-hook-form",
+    "form",
+    "validators",
+    "validation",
+    "blueprint"
+  ],
+  "author": "David González <braben@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dgonz64/rhfa-blueprint"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "jest": "^24.8.0",
+    "jsdoc-to-markdown": "^5.0.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-hook-form": "^6.0.7",
+    "rimraf": "^2.6.3",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "minimist": "1.2.5"
+  },
+  "peerDependencies": {
+    "@blueprintjs/core": "^3.0.0",
+    "@blueprintjs/table": "^3.0.0",
+    "react-hook-form": "^6.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist && rimraf lib",
+    "start": "npm run clean && babel src --out-dir lib --watch --verbose --source-maps",
+    "build": "npm run clean && npm run build:commonjs && npm run build:umd && npm run build:umd:min",
+    "build:commonjs": "babel src --out-dir lib",
+    "build:umd": "webpack",
+    "build:umd:min": "NODE_ENV=production npm run build:umd",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:short": "jest",
+    "test": "jest --verbose",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "react-hook-form-auto": "^1.1.2"
+  }
+}
