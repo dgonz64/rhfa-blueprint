@@ -4,9 +4,6 @@ import {
   InputGroup,
   RadioGroup,
 
-  MenuItem,
-  FormControlLabel,
-  FormLabel,
   Radio,
   Checkbox,
   Typography,
@@ -20,9 +17,21 @@ import {
 import { ArrayTable } from './components/ArrayTable'
 import { ArrayPanel } from './components/ArrayPanel'
 import { trField, tr, processOptions } from 'react-hook-form-auto'
+import { Controller } from 'react-hook-form'
+
+const HTMLSelect = ({
+  onChange,
+  children
+}) =>
+  <div className="bp3-select .modifier">
+    <select onChange={onChange}>
+      {children}
+    </select>
+  </div>
 
 const GroupAdaptor = ({
   name,
+  field,
   fieldSchema,
   schemaTypeName,
   errors,
@@ -34,7 +43,7 @@ const GroupAdaptor = ({
     return children
   } else {
     const label = typeof labelOverride != 'undefined' ?
-      labelOverride : trField({ fieldSchema, schemaTypeName })
+      labelOverride : trField({ fieldSchema, schemaTypeName, field })
     const error = errors[name]
 
     return (
@@ -119,15 +128,13 @@ export default {
       return {
         ...props,
         component: ControlAdaptor,
-        adaptorComponent: TextField,
+        adaptorComponent: HTMLSelect,
         controlProps: {
-          select: true,
-          style: { display: 'flex' },
           onChange: setValueFromEvent,
           children: options.map(op =>
-            <MenuItem key={op.value} value={op.value}>
+            <option key={op.value} value={op.value}>
               {op.label}
-            </MenuItem>
+            </option>
           )
         }
       }
@@ -157,40 +164,37 @@ export default {
     }
   },
   radios: {
-    wrapper: (props) => <GroupAdaptor {...props} component={RaioGroup} />,
+    wrapper: (props) => props.children,
     render: {
       component: (props) => {
-        const { name, register, defaultValue } = props
+        const { name, formHook, register, defaultValue } = props
 
         const label = trField(props)
         const options = processOptions(props)
-        const inputProps = {
-          ref: register
-        }
+
+        const renderRadio = ({ value, onChange, onBlur }) =>
+          <RadioGroup
+            label={label}
+            selectedValue={value}
+            onChange={onChange}
+          >
+            {
+              options.map(op =>
+                <Radio
+                  label={op.label}
+                  value={op.value}
+                />
+              )
+            }
+          </RadioGroup>
 
         return (
-          <div>
-            <FormLabel component="legend">
-              {label}
-            </FormLabel>
-            <RadioGroup
-              aria-label={label}
-              name={name}
-              defaultValue={defaultValue || 0}
-            >
-              {
-                options.map(op =>
-                  <FormControlLabel
-                    name={name}
-                    key={op.value}
-                    value={op.value}
-                    control={<Radio inputProps={inputProps} />}
-                    label={op.label}
-                  />
-                )
-              }
-            </RadioGroup>
-          </div>
+          <Controller
+            name={name}
+            control={formHook.control}
+            defaultValue={defaultValue || 0}
+            render={renderRadio}
+          />
         )
       }
     }

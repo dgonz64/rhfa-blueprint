@@ -1,7 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { act } from 'react-dom/test-utils'
-import TextField from '@material-ui/core/TextField'
 
 import config from './enzymeConfig'
 import {
