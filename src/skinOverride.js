@@ -2,17 +2,14 @@ import React from 'react'
 import {
   FormGroup,
   InputGroup,
+  Elevation,
   RadioGroup,
-
   Radio,
   Checkbox,
-  Typography,
   Slider,
   Button,
   Icon,
-  IconButton,
-  Card,
-  CardContent
+  Card
 } from '@blueprintjs/core'
 import { ArrayTable } from './components/ArrayTable'
 import { ArrayPanel } from './components/ArrayPanel'
@@ -48,8 +45,8 @@ const GroupAdaptor = ({
 
     return (
       <FormGroup
-        intent={error ? 'default' : 'danger'}
-        helperText={error}
+        intent={error ? 'danger' : 'default'}
+        helperText={error && error.message}
         label={label}
         labelFor={name}
         labelInfo={fieldSchema.required && tr('required')}
@@ -84,6 +81,7 @@ const ControlAdaptor = props => {
       name={name}
       defaultValue={defaultValue || ''}
       inputRef={register}
+      autocomplete="off"
     />
   )
 }
@@ -97,7 +95,7 @@ export default {
     }
   },
   number: {
-    coerce: value => parseFloat(value),
+    coerce: value => value && parseFloat(value) || 0,
     render: {
       component: ControlAdaptor,
       adaptorComponent: InputGroup,
@@ -112,53 +110,87 @@ export default {
     }
   },
   select: {
-    render: (props) => {
-      const { schemaTypeName, name, field, fieldSchema, register, setValue } = props
+    render: {
+      component: (props) => {
+        const {
+          schemaTypeName,
+          name,
+          field,
+          fieldSchema,
+          register,
+          setValue,
+          formHook,
+          defaultValue
+        } = props
 
-      const options = processOptions({
-        ...props,
-        addDefault: true
-      })
+        const label = trField(props)
+        const options = processOptions({
+          ...props,
+          addDefault: true
+        })
 
-      register({ name })
-      const setValueFromEvent = event => {
-        setValue(name, event.target.value)
-      }
+        const renderSelect = ({ value, onChange, onBlur }) =>
+          <HTMLSelect
+            label={label}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+          >
+            {
+              options.map(op =>
+                <option key={op.value} value={op.value}>
+                  {op.label}
+                </option>
+              )
+            }
+          </HTMLSelect>
 
-      return {
-        ...props,
-        component: ControlAdaptor,
-        adaptorComponent: HTMLSelect,
-        controlProps: {
-          onChange: setValueFromEvent,
-          children: options.map(op =>
-            <option key={op.value} value={op.value}>
-              {op.label}
-            </option>
-          )
-        }
+        return (
+          <Controller
+            key={name}
+            name={name}
+            control={formHook.control}
+            defaultValue={defaultValue || 0}
+            render={renderSelect}
+          />
+        )
       }
     }
   },
   boolean: {
+    wrapper: (props) => props.children,
     coerce: value => Boolean(value),
     render: {
       component: (props) => {
-        const { register, name, defaultValue } = props
+        const {
+          register,
+          name,
+          defaultValue,
+          formHook,
+          control
+        } = props
+
+        const label = trField(props)
+
+        const renderCheckbox = ({ value, onChange, onBlur }) =>
+          <Checkbox
+            key={name}
+            name={name}
+            inputProps={{ ref: register }}
+            value={value}
+            onChange={(e) => { onChange(e.target.checked) }}
+            onBlur={onBlur}
+            label={label}
+          />
 
         return (
-          <div>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name={name}
-                  inputProps={{ ref: register }}
-                  defaultValue={defaultValue}
-                />
-              }
-              label={trField(props)}
-            />
-          </div>
+          <Controller
+            key={name}
+            name={name}
+            control={formHook.control}
+            defaultValue={defaultValue}
+            render={renderCheckbox}
+          />
         )
       }
     }
@@ -177,6 +209,7 @@ export default {
             label={label}
             selectedValue={value}
             onChange={onChange}
+            onBlur={onBlur}
           >
             {
               options.map(op =>
@@ -203,30 +236,40 @@ export default {
     coerce: value => parseFloat(value),
     render: {
       component: (props) => {
-        const { name, defaultValue, fieldSchema, register, setValue } = props
+        const {
+          name,
+          fieldSchema: {
+            min,
+            max,
+            step,
+            labelStep,
+            sliderParams
+          },
+          register,
+          formHook
+        } = props
 
-        register({ name })
-        const setValueFromEvent = (event, value) => {
-          setValue(name, value)
-        }
+        const defaultValue = props.defaultValue ?? min
 
-        const { sliderParams } = fieldSchema
-
+        const renderSlider = ({ value, onChange, onBlur }) =>
+          <Slider
+            {...sliderParams}
+            min={min}
+            max={max}
+            value={value}
+            stepSize={step}
+            labelStepSize={labelStep}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+        
         return (
-          <div>
-            <Typography id={name} gutterBottom>
-              {trField(props)}
-            </Typography>
-            <Slider
-              {...sliderParams}
-              defaultValue={defaultValue || 0}
-              aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              min={fieldSchema.min}
-              max={fieldSchema.max}
-              onChange={setValueFromEvent}
-            />
-          </div>
+          <Controller
+            name={name}
+            control={formHook.control}
+            defaultValue={defaultValue || 0}
+            render={renderSlider}
+          />
         )
       }
     }
@@ -234,14 +277,14 @@ export default {
   button: {
     render: ({ styles, ...rest }) => {
       if (rest.type == 'submit')
-        return <Button color="primary" {...rest} />
+        return <Button intent="primary" {...rest} />
       else
         return <Button {...rest} />
     }
   },
   arrayButton: {
     render: ({ styles, ...rest }) =>
-      <IconButton size="small" {...rest} />
+      <Button size="small" {...rest} />
   },
   form: {
     render: ({ children, onSubmit }) =>
@@ -251,15 +294,9 @@ export default {
   },
   panel: {
     render: ({ children, header }) =>
-      <Card>
-        <CardContent>
-          <Typography color="textSecondary" gutterBottom>
-            {header}
-          </Typography>
-          <Typography variant="body2" component="p">
-            {children}
-          </Typography>
-        </CardContent>
+      <Card elevation={Elevation.TWO}>
+        <h3>{header}</h3>
+        {children}
       </Card>
   },
   addGlyph: {

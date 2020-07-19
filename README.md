@@ -31,7 +31,22 @@ Just like `react-hook-form-auto` except you import `rhfa-blueprint`:
       />
 ```
 
-## Your own Autoform
+## Specific schema attributes for Blueprint
+
+### type = 'range'
+
+Appart from `min` and `max`, you should setup `step` and `labelStep`:
+
+```javascript
+  algoer: {
+    type: 'range',
+    min: 10,
+    max: 90,
+    step: 5,
+    labelStep: 20,
+    defaultValue: 50
+  }
+```
 
 Its recommended to put the `Autoform` component in its own module. This will let you opt in for the array icons.
 

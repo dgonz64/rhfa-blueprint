@@ -1,53 +1,29 @@
 import React from 'react'
 // import { renderLectures } from './renderLectures'
 
-import { Column, Table } from '@blueprintjs/table'
+import { Column, Table, Cell } from '@blueprintjs/table'
 
 import { trField } from 'react-hook-form-auto'
 
-const renderRemove = ({ idx, closeButton }) =>
-  <TableCell key={idx}>
-    {closeButton}
-  </TableCell>
-
-const renderTableHeader = ({ schema }) => {
-  const subType = schema.getType()
-  const schemaDef = schema.getSchema()
-  const fields = Object.keys(schemaDef)
-
-  return (
-    <TableRow>
-      <TableCell />
-      {
-        fields.map(sub =>
-          <TableCell key={sub}>
-            {trField(subType, sub)}
-          </TableCell>
-        )
-      }
-    </TableRow>
-  )
-}
-
-const renderColumns = ({ items, subType }) => {
+const renderColumns = ({ items, subType, fieldNames }) => {
   const someItem = items[0]
 
-  const createCellRenderer = column => rowIdx => {
+  const createCellRenderer = (column, colIdx) => rowIdx => {
     return (
       <Cell key={column}>
-        {items[rowIdx].inputs[column]}
+        {items[rowIdx].inputs[colIdx]}
       </Cell>
     )
   }
 
-  return fieldNames.map((columnName) => {
+  return fieldNames.map((columnName, colIdx) => {
     const displayName = trField(subType, columnName)
 
     return (
       <Column
         key={columnName}
         name={displayName}
-        cellRenderer={createCellRenderer(columnName)}
+        cellRenderer={createCellRenderer(columnName, colIdx)}
       />
     )
   })
@@ -58,27 +34,32 @@ export const ArrayTable = ({ items, schema }) => {
   const schemaDef = schema.getSchema()
   const fieldNames = Object.keys(schemaDef)
 
-  const renderRemove = rowIdx => {
-    const { idx, closeButton } = items[rowIdx]
+  if (items.length > 0) {
+    const renderRemove = rowIdx => {
+      const { idx, closeButton } = items[rowIdx]
+
+      return (
+        <Cell key="remove">
+          {closeButton}
+        </Cell>
+      )
+    }
+
+    console.log("ITEMS", items)
 
     return (
-      <Cell key="remove">
-        {renderRemove({ idx, closeButton })}
-      </Cell>
+      <>
+        {/* renderLectures(props) */}
+        <Table numRows={items.length} defaultRowHeight={31}>
+          {renderColumns({ items, subType, fieldNames })}
+          <Column
+            key="remove"
+            name=""
+            cellRenderer={renderRemove}
+          />
+        </Table>
+      </>
     )
-  }
-
-  if (items.length > 0) {
-    <>
-      {/* renderLectures(props) */}
-      <Table numRows={items.length}>
-        {renderColumns({ items, subType })}
-        <Column
-          key="remove"
-          cellRenderer={renderRemove}
-        />
-      </Table>
-    </>
   } else
     return null
 }
