@@ -38,7 +38,7 @@ Just like `react-hook-form-auto` except you import `rhfa-blueprint`:
 Appart from `min` and `max`, you should setup `step` and `labelStep`:
 
 ```javascript
-  algoer: {
+  something: {
     type: 'range',
     min: 10,
     max: 90,
