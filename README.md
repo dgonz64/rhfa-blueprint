@@ -4,7 +4,7 @@ This library allows your React application to automatically generate forms using
 
 ## Installation
 
-    $ npm install react-hook-form rhfa-blueprint @blueprint/core --save
+    $ npm install react-hook-form rhfa-blueprint @blueprint/core @blueprint/icons @blueprint/table --save
 
 ## Usage
 
