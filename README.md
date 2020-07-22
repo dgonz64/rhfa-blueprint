@@ -73,4 +73,33 @@ Its recommended to put the `Autoform` component in its own module. This will let
       />
 ```
 
+### Helper text
+
+You can specify helperText in the schema and it will be printed as Blueprint's `helperText`.
+
+```javascript
+    import { createSchema } from 'rhfa-blueprint'
+
+    const smt = createSchema('something', {
+      name: {
+        type: 'string',
+        helperText: tr('models.name.helper')
+      }
+    })
+```
+
+You can set the text directly too, without using `tr()`.
+
+### Any other
+
+This is just a reminder that you can set any property to wrapper or input:
+
+```javascript
+  heads: {
+    type: 'number',
+    addInputProps: { leftIcon: 'person' },
+    addWrapperProps: { labelInfo: '(batteries included)' }
+  },
+```
+
 ## [Documentation](https://github.com/dgonz64/react-hook-form-auto)

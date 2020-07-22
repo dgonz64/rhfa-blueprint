@@ -14,7 +14,13 @@ import {
 } from '@blueprintjs/core'
 import { ArrayTable } from './components/ArrayTable'
 import { ArrayPanel } from './components/ArrayPanel'
-import { trField, tr, processOptions } from 'react-hook-form-auto'
+import {
+  trPath,
+  trField,
+  tr,
+  processOptions,
+  stringExists
+} from 'react-hook-form-auto'
 import { Controller } from 'react-hook-form'
 
 const GroupAdaptor = ({
@@ -25,7 +31,8 @@ const GroupAdaptor = ({
   errors,
   inline,
   children,
-  labelOverride
+  labelOverride,
+  addWrapperProps
 }) => {
   if (inline) {
     return children
@@ -34,13 +41,23 @@ const GroupAdaptor = ({
       labelOverride : trField({ fieldSchema, schemaTypeName, field })
     const error = errors[name]
 
+    const helperId = trPath(schemaTypeName, field, '_helper')
+    let helperText
+    if (error && error.message)
+      helperText = error.message
+    else if (stringExists(helperId))
+      helperText = tr(helperId)
+    else
+      helperText = fieldSchema.helperText
+
     return (
       <FormGroup
         intent={error ? 'danger' : 'default'}
-        helperText={error && error.message}
+        helperText={helperText}
         label={label}
         labelFor={name}
-        labelInfo={fieldSchema.required && tr('required')}
+        labelInfo={fieldSchema.required && tr('requiredLabel')}
+        {...addWrapperProps}
       >
         {children}
       </FormGroup>
@@ -54,11 +71,11 @@ const ControlAdaptor = props => {
     defaultValue,
     controlProps,
     errors,
-
     field,
     fieldSchema,
     adaptorComponent,
-    register
+    register,
+    ...rest
   } = props
 
   const error = errors[field]
@@ -69,6 +86,7 @@ const ControlAdaptor = props => {
   return (
     <Comp
       {...controlProps}
+      {...rest}
       name={name}
       defaultValue={defaultValue || ''}
       inputRef={register}
