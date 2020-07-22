@@ -48,31 +48,6 @@ Appart from `min` and `max`, you should setup `step` and `labelStep`:
   }
 ```
 
-Its recommended to put the `Autoform` component in its own module. This will let you opt in for the array icons.
-
-```javascript
-    import { Autoform as RHFAutoform } from 'rhfa-blueprint'
-    import { Icon } from '@blueprintjs/icons'
-
-    const skinAdd = {
-      addGlyph: {
-        render: () =>
-          <Icon icon="add" />
-      },
-      removeGlyph: {
-        render: () =>
-          <Icon icon="remove" />
-      }
-    }
-
-    export const Autoform = (props) =>
-      <RHFAutoform
-        schema={client}
-        onSubmit={onSubmit}
-        skinOverride={skinAdd}
-      />
-```
-
 ### Helper text
 
 You can specify helperText in the schema and it will be printed as Blueprint's `helperText`.
