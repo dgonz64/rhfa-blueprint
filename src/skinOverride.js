@@ -9,22 +9,13 @@ import {
   Slider,
   Button,
   Icon,
-  Card
+  Card,
+  HTMLSelect
 } from '@blueprintjs/core'
 import { ArrayTable } from './components/ArrayTable'
 import { ArrayPanel } from './components/ArrayPanel'
 import { trField, tr, processOptions } from 'react-hook-form-auto'
 import { Controller } from 'react-hook-form'
-
-const HTMLSelect = ({
-  onChange,
-  children
-}) =>
-  <div className="bp3-select .modifier">
-    <select onChange={onChange}>
-      {children}
-    </select>
-  </div>
 
 const GroupAdaptor = ({
   name,
@@ -135,15 +126,8 @@ export default {
             value={value}
             onChange={onChange}
             onBlur={onBlur}
-          >
-            {
-              options.map(op =>
-                <option key={op.value} value={op.value}>
-                  {op.label}
-                </option>
-              )
-            }
-          </HTMLSelect>
+            options={options}
+          />
 
         return (
           <Controller
