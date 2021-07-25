@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  FormGroup,
   InputGroup,
   Elevation,
   RadioGroup,
@@ -15,122 +14,39 @@ import {
 import { ArrayTable } from './components/ArrayTable'
 import { ArrayPanel } from './components/ArrayPanel'
 import {
-  trPath,
   trField,
-  tr,
   processOptions,
-  stringExists
 } from 'react-hook-form-auto'
 import { Controller } from 'react-hook-form'
 
-const GroupAdaptor = ({
-  name,
-  field,
-  fieldSchema,
-  schemaTypeName,
-  errors,
-  inline,
-  children,
-  labelOverride,
-  addWrapperProps
-}) => {
-  if (inline) {
-    return children
-  } else {
-    const label = typeof labelOverride != 'undefined' ?
-      labelOverride : trField({ fieldSchema, schemaTypeName, field })
-    const error = errors[name]
-
-    const helperId = trPath(schemaTypeName, field, '_helper')
-    let helperText
-    if (error && error.message)
-      helperText = error.message
-    else if (stringExists(helperId))
-      helperText = tr(helperId)
-    else
-      helperText = fieldSchema.helperText
-
-    return (
-      <FormGroup
-        intent={error ? 'danger' : 'default'}
-        helperText={helperText}
-        label={label}
-        labelFor={name}
-        labelInfo={fieldSchema.required && tr('requiredLabel')}
-        {...addWrapperProps}
-      >
-        {children}
-      </FormGroup>
-    )
-  }
-}
-
-const ControlAdaptor = props => {
-  const {
-    name,
-    defaultValue,
-    controlProps,
-    errors,
-    field,
-    fieldSchema,
-    adaptorComponent,
-    register,
-    ...rest
-  } = props
-
-  const error = errors[field]
-  const errorText = typeof error == 'object' ?
-    tr(error.message, fieldSchema) : ''
-  const Comp = adaptorComponent
-
-  return (
-    <Comp
-      {...controlProps}
-      {...rest}
-      name={name}
-      defaultValue={defaultValue || ''}
-      inputRef={register}
-      autocomplete="off"
-    />
-  )
-}
+import { GroupAdaptor } from './components/GroupAdaptor'
+import { InputGroupAdaptor } from './components/InputGroupAdaptor'
 
 export default {
   defaultWrap: GroupAdaptor,
   string: {
     render: {
-      component: ControlAdaptor,
-      adaptorComponent: InputGroup
+      component: InputGroupAdaptor
     }
   },
   number: {
     coerce: value => value && parseFloat(value) || 0,
     render: {
-      component: ControlAdaptor,
-      adaptorComponent: InputGroup,
+      component: InputGroupAdaptor,
       controlProps: { type: 'number' }
     }
   },
   password: {
     render: {
-      component: ControlAdaptor,
-      adaptorComponent: InputGroup,
+      component: InputGroupAdaptor,
       controlProps: { type: 'password' }
     }
   },
   select: {
+    controlled: true,
     render: {
       component: (props) => {
-        const {
-          schemaTypeName,
-          name,
-          field,
-          fieldSchema,
-          register,
-          setValue,
-          formHook,
-          defaultValue
-        } = props
+        const { name, value, onChange, onBlur } = props
 
         const label = trField(props)
         const options = processOptions({
@@ -138,22 +54,13 @@ export default {
           addDefault: true
         })
 
-        const renderSelect = ({ value, onChange, onBlur }) =>
+        return (
           <HTMLSelect
             label={label}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
             options={options}
-          />
-
-        return (
-          <Controller
-            key={name}
-            name={name}
-            control={formHook.control}
-            defaultValue={defaultValue || 0}
-            render={renderSelect}
           />
         )
       }
@@ -162,36 +69,21 @@ export default {
   boolean: {
     wrapper: (props) => props.children,
     coerce: value => Boolean(value),
+    controlled: true,
     render: {
+      inline: true,
       component: (props) => {
-        const {
-          register,
-          name,
-          defaultValue,
-          formHook,
-          control
-        } = props
+        const { name, value, onChange, onBlur } = props
 
         const label = trField(props)
 
-        const renderCheckbox = ({ value, onChange, onBlur }) =>
+        return (
           <Checkbox
-            key={name}
             name={name}
-            inputProps={{ ref: register }}
             value={value}
-            onChange={(e) => { onChange(e.target.checked) }}
+            onChange={onChange}
             onBlur={onBlur}
             label={label}
-          />
-
-        return (
-          <Controller
-            key={name}
-            name={name}
-            control={formHook.control}
-            defaultValue={defaultValue}
-            render={renderCheckbox}
           />
         )
       }
@@ -199,14 +91,16 @@ export default {
   },
   radios: {
     wrapper: (props) => props.children,
+    controlled: true,
     render: {
+      inline: true,
       component: (props) => {
-        const { name, formHook, register, defaultValue } = props
+        const { name, value, onChange, onBlur } = props
 
         const label = trField(props)
         const options = processOptions(props)
 
-        const renderRadio = ({ value, onChange, onBlur }) =>
+        return (
           <RadioGroup
             label={label}
             selectedValue={value}
@@ -216,20 +110,15 @@ export default {
             {
               options.map(op =>
                 <Radio
+                  key={op.value}
+                  name={name}
                   label={op.label}
                   value={op.value}
+                  readOnly
                 />
               )
             }
           </RadioGroup>
-
-        return (
-          <Controller
-            name={name}
-            control={formHook.control}
-            defaultValue={defaultValue || 0}
-            render={renderRadio}
-          />
         )
       }
     }
@@ -247,11 +136,11 @@ export default {
             labelStep,
             sliderParams
           },
-          register,
           formHook
         } = props
 
-        const defaultValue = props.defaultValue ?? min
+        const defaultValue = typeof props.defaultValue == 'undefined' ?
+          min : props.defaultValue
 
         const renderSlider = ({ value, onChange, onBlur }) =>
           <Slider
@@ -304,6 +193,13 @@ export default {
   addGlyph: {
     render: () =>
       <Icon icon="add" />
+  },
+  div: {
+    render: props =>
+      <div {...props} />
+  },
+  text: {
+    render: ({ children }) => children
   },
   removeGlyph: {
     render: () =>

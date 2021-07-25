@@ -18,7 +18,7 @@ addTranslations({
 export let Autoform = (props, ref) =>
   <RHFAutoform
     {...props}
-    skinOverride={overrides}
+    skin={overrides}
     ref={ref}
   />
 

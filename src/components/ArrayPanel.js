@@ -5,7 +5,7 @@ const renderItems = ({ items, Panel }) =>
   items.map(({ idx, closeButton, inputs }) =>
     <Card key={idx}>
       <h5>{closeButton}</h5>
-      <p>{inputs}</p>
+      <div>{inputs}</div>
     </Card>
   )
 
