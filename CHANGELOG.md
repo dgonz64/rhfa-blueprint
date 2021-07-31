@@ -3,6 +3,7 @@
 ## 1.1.3
 
 * Update rhfa lock
+* Deal with inputRef and helperText
 
 ## 1.1.2
 
