@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.3
+
+* Update rhfa lock
+
 ## 1.1.2
 
 * Pass `inputRef` to allow `setValue` reaction
