@@ -9,6 +9,7 @@ export const InputGroupAdaptor = ({
   controlProps,
   onChange,
   onBlur,
+  inputRef
 }) => {
   return (
     <InputGroup
@@ -17,6 +18,7 @@ export const InputGroupAdaptor = ({
       defaultValue={defaultValue || ''}
       onChange={onChange}
       onBlur={onBlur}
+      inputRef={inputRef}
       autoComplete="off"
     />
   )

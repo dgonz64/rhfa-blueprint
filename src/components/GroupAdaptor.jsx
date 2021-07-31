@@ -15,6 +15,7 @@ export const GroupAdaptor = ({
   fieldSchema,
   schemaTypeName,
   errorText,
+  helperText,
   inline,
   children,
   labelOverride,
@@ -27,13 +28,8 @@ export const GroupAdaptor = ({
       labelOverride : trField({ fieldSchema, schemaTypeName, field })
 
     const helperId = trPath(schemaTypeName, field, '_helper')
-    let helperText
     if (errorText)
       helperText = errorText
-    else if (stringExists(helperId))
-      helperText = tr(helperId)
-    else
-      helperText = fieldSchema.helperText
 
     return (
       <FormGroup
