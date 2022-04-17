@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4
+
+* Rebundle with latest rhfa
+
 ## 1.1.3
 
 * Update rhfa lock
