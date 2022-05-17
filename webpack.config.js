@@ -29,7 +29,7 @@ module.exports = (env = {}) => {
       ],
     },
     externals: [
-      /^@blueprintjs\/(core|table)[\/a-zA-Z]*/
+      /^@blueprintjs\/(core|table|select)[\/a-zA-Z]*/
     ]
   }
 }

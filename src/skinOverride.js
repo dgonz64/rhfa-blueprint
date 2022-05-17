@@ -11,13 +11,12 @@ import {
   Card,
   HTMLSelect
 } from '@blueprintjs/core'
+import { Select } from './components/Select'
 import { ArrayTable } from './components/ArrayTable'
 import { ArrayPanel } from './components/ArrayPanel'
-import {
-  trField,
-  processOptions,
-} from 'react-hook-form-auto'
+import { trField } from 'react-hook-form-auto'
 import { Controller } from 'react-hook-form'
+import { optioner } from './util/optioner'
 
 import { GroupAdaptor } from './components/GroupAdaptor'
 import { InputGroupAdaptor } from './components/InputGroupAdaptor'
@@ -44,15 +43,14 @@ export default {
   },
   select: {
     controlled: true,
+    component: Select
+  },
+  htmlSelect: {
+    controlled: true,
     render: {
       component: (props) => {
         const { name, value, onChange, onBlur } = props
-
-        const label = trField(props)
-        const options = processOptions({
-          ...props,
-          addDefault: true
-        })
+        const { label, options } = optioner(props, { addDefault: true })
 
         return (
           <HTMLSelect
@@ -96,9 +94,7 @@ export default {
       inline: true,
       component: (props) => {
         const { name, value, onChange, onBlur } = props
-
-        const label = trField(props)
-        const options = processOptions(props)
+        const { label, options } = optioner(props)
 
         return (
           <RadioGroup

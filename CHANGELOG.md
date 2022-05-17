@@ -1,7 +1,10 @@
 # Changelog
 
-## 1.1.5 (not launched yet)
+## 1.2.0
 
+### Added
+
+* Select using `@blueprintjs/select`. Far sexier.
 * Export wrappers
 
 ## 1.1.4

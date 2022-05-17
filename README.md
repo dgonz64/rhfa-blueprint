@@ -2,9 +2,15 @@
 
 This library allows your React application to automatically generate forms using [ReactHookForm](https://react-hook-form.com/) that are redered by [Blueprint](https://blueprintjs.com/). The form and validations are generated following a schema inspired by [SimpleSchema](https://github.com/aldeed/simple-schema-js).
 
+## Update to 1.2.0
+
+Just add `@blueprintjs/select` to your project.
+
+    $ npm install @blueprintjs/select --save
+
 ## Installation
 
-    $ npm install react-hook-form rhfa-blueprint @blueprint/core @blueprint/icons @blueprint/table --save
+    $ npm install react-hook-form rhfa-blueprint @blueprintjs/core @blueprintjs/icons @blueprintjs/table @blueprintjs/select --save
 
 ## Usage
 
@@ -64,6 +70,40 @@ You can specify helperText in the schema and it will be printed as Blueprint's `
 ```
 
 You can set the text directly too, without using `tr()`.
+
+### Select
+
+There are additional props for the field schema:
+
+```javascript
+    import { createSchema } from 'rhfa-blueprint'
+
+    const selectable = createSchema('selectable', {
+      name: {
+        type: 'select',
+        options: [
+          { value: 'a', label: 'A', icon: 'build' },
+          { value: 'b', label: 'B', icon: 'circle' },
+          { value: 'c', label: 'C', icon: 'code' },
+          { value: 'd', label: 'D', icon: 'cut' }
+        ],
+        addDefault: false,
+        addClear: true,
+        clearLabel: tr('some.label.that.says.clear'),
+        clearIcon: 'clean',
+        showValues: true,
+        multiselect: true
+      }
+    })
+```
+
+You can add icons to the options if you are specifying them in object format like in this example.
+
+* `addDefault` is not needed here
+* `addClear` will add the clear option
+* `clearLabel` will force a label for the "clear selection" option (`addClear`)
+* `showValues` will show values as option label (grayed)
+* `multiselect` will return an array
 
 ### Any other
 
