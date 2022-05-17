@@ -77,4 +77,14 @@ This is just a reminder that you can set any property to wrapper or input:
   },
 ```
 
-## [Documentation](https://github.com/dgonz64/react-hook-form-auto)
+### Exported wrappers
+
+#### GroupAdaptor
+
+Let's you wrap your input as `rhfa-blueprint` would. Signature is in [source code](src/components/GroupAdaptor.jsx)
+
+#### InputGroupAdaptor
+
+Changes usual `rhfa-blueprint` props to those of `InputGroup` from `blueprintjs`.
+
+## [Base documentation](https://github.com/dgonz64/react-hook-form-auto)

@@ -1,6 +1,10 @@
 import React, { forwardRef } from 'react'
 
 export * from 'react-hook-form-auto'
+export { GroupAdaptor } from './components/GroupAdaptor'
+export { InputGroupAdaptor } from './components/InputGroupAdaptor'
+export { ArrayPanel } from './components/ArrayPanel'
+export { ArrayTable } from './components/ArrayTable'
 
 import {
   Autoform as RHFAutoform,
