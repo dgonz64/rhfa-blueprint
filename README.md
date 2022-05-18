@@ -2,11 +2,13 @@
 
 This library allows your React application to automatically generate forms using [ReactHookForm](https://react-hook-form.com/) that are redered by [Blueprint](https://blueprintjs.com/). The form and validations are generated following a schema inspired by [SimpleSchema](https://github.com/aldeed/simple-schema-js).
 
-## Update to 1.2.0
+## 1.2.0 Update
 
-Just add `@blueprintjs/select` to your project.
+Selects are now [blueprint Select](https://blueprintjs.com/docs/#select). That means you need the addon. Just add `@blueprintjs/select` to your project.
 
     $ npm install @blueprintjs/select --save
+
+You can use `HTMLSelect` with `htmlSelect` field schema's `type`.
 
 ## Installation
 
@@ -99,11 +101,12 @@ There are additional props for the field schema:
 
 You can add icons to the options if you are specifying them in object format like in this example.
 
-* `addDefault` is not needed here
-* `addClear` will add the clear option
+* `addDefault` is not needed here because button already prints the placeholder.
+* `addClear` will add the clear option. Only for single value selects.
 * `clearLabel` will force a label for the "clear selection" option (`addClear`)
 * `showValues` will show values as option label (grayed)
-* `multiselect` will return an array
+* `multiselect` will return an array with the selected values. Icons are ignored.
+* `icon` icon for the left side of the button.
 
 ### Any other
 

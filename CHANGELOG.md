@@ -5,6 +5,7 @@
 ### Added
 
 * Select using `@blueprintjs/select`. Far sexier.
+* Multiselect
 * Export wrappers
 
 ## 1.1.4
