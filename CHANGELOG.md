@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+### Added
+
+* Exporting `Select`
+
 ## 1.2.0
 
 ### Added

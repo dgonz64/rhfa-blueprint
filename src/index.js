@@ -5,6 +5,7 @@ export { GroupAdaptor } from './components/GroupAdaptor'
 export { InputGroupAdaptor } from './components/InputGroupAdaptor'
 export { ArrayPanel } from './components/ArrayPanel'
 export { ArrayTable } from './components/ArrayTable'
+export { Select } from './components/Select'
 
 import {
   Autoform as RHFAutoform,
