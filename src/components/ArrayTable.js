@@ -45,8 +45,6 @@ export const ArrayTable = ({ items, schema }) => {
       )
     }
 
-    console.log("ITEMS", items)
-
     return (
       <>
         {/* renderLectures(props) */}
