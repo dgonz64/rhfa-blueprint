@@ -83,9 +83,11 @@ export const Select = (props) => {
   const isMulti = fieldSchema.multiselect
   const value = isMulti ? ensureArray(props.value) : props.value
 
-  const { label, options, selectedLabel } = optioner(props, {
+  const { label, options, selectedOption } = optioner(props, {
     addClear: !isMulti && fieldSchema.addClear
   })
+  const selectedLabel = selectedOption && selectedOption.label
+  const selectedIcon = selectedOption && selectedOption.icon
 
   const renderer = (item, { modifiers, handleClick, query }) => {
     const valueLabel = fieldSchema.showValues && item.value
@@ -176,7 +178,7 @@ export const Select = (props) => {
         !isMulti &&
           <Button
             text={selectedLabel || placeholder}
-            icon={icon}
+            icon={selectedIcon || icon}
             rightIcon="double-caret-vertical"
           />
       }

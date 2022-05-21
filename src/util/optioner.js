@@ -10,12 +10,12 @@ export function optioner(props, { addDefault, addClear } = {}) {
     addDefault
   })
 
-  const selectedLabel = options.reduce((found, cur) => {
+  const selectedOption = options.reduce((found, cur) => {
     if (cur && cur.value == props.value)
-      return cur.label
+      return cur
     else
       return found
-  }, '')
+  }, null)
 
   if (addClear) {
     options.push({
@@ -28,6 +28,6 @@ export function optioner(props, { addDefault, addClear } = {}) {
   return {
     label: trField(props),
     options,
-    selectedLabel
+    selectedOption
   }
 }
