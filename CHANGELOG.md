@@ -1,14 +1,14 @@
 # Changelog
 
-## 1.2.2
-
-* Minor fixes with Checkbox and Selection
-
 ## 1.2.1
 
 ### Added
 
 * Exporting `Select`
+
+### Fixed
+
+* Minor fixes with Checkbox and Selection
 
 ## 1.2.0
 
