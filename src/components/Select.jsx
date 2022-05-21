@@ -153,7 +153,7 @@ export const Select = (props) => {
 
     multiselectProps = {
       selectedItems: multiValue,
-      tagRenderer: item => item.label,
+      tagRenderer: item => item && item.label,
       tagInputProps: {
         onRemove: handleRemove,
         rightElement: clearButton,
