@@ -78,6 +78,7 @@ export default {
         return (
           <Checkbox
             name={name}
+            checked={value}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
