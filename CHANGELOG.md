@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.2
+
+### Changed
+
+* Just updated `react-hook-form-auto`.
+
+### Fixed
+
+* `Select` with multiselect will work with initial values
+
 ## 1.2.1
 
 ### Added
