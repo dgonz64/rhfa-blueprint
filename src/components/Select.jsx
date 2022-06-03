@@ -73,12 +73,16 @@ function filterItem(query, item, _index, exactMatch) {
 export const Select = (props) => {
   const {
     name,
-    onChange,
+    setValue,
     onBlur,
     fieldSchema,
     schemaTypeName,
     field
   } = props
+
+  const namedSetValue = (newValue) => {
+    setValue(name, newValue)
+  }
 
   const isMulti = fieldSchema.multiselect
   const value = isMulti ? ensureArray(props.value) : props.value
@@ -117,23 +121,23 @@ export const Select = (props) => {
       const alreadyIdx = itemSelectedIndex(item, value)
 
       if (alreadyIdx == -1) {
-        onChange([ ...value, item.value ])
+        namedSetValue([ ...value, item.value ])
       } else {
         handleRemove(null, alreadyIdx)
       }
     }
   } else {
     handleSelect = (item) => {
-      onChange(item.value)
+      namedSetValue(item.value)
     }
   }
 
   const handleRemove = (_, index) => {
-    onChange(inverseSlice(value, index))
+    namedSetValue(inverseSlice(value, index))
   }
 
   const handleClear = () => {
-    onChange([])
+    namedSetValue([])
   }
 
   const icon = fieldSchema.icon
