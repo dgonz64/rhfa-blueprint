@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.3
+
+### Fixed
+
+* Arrays now show validation errors
+
 ## 1.2.2
 
 ### Changed

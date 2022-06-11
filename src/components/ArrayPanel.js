@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card } from '@blueprintjs/core'
+import { renderLectures } from './renderLectures'
 
 const renderItems = ({ items, Panel }) =>
   items.map(({ idx, closeButton, inputs }) =>
@@ -15,6 +16,7 @@ export const ArrayPanel = (props) => {
 
   return (
     <>
+      {renderLectures(props)}
       {renderItems({ ...props, Panel })}
     </>
   )

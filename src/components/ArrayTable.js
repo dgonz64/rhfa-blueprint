@@ -1,5 +1,5 @@
 import React from 'react'
-// import { renderLectures } from './renderLectures'
+import { renderLectures } from './renderLectures'
 
 import { Column, Table, Cell } from '@blueprintjs/table'
 
@@ -29,7 +29,7 @@ const renderColumns = ({ items, subType, fieldNames }) => {
   })
 }
 
-export const ArrayTable = ({ items, schema }) => {
+export const ArrayTable = ({ items, schema, errorText }) => {
   const subType = schema.getType()
   const schemaDef = schema.getSchema()
   const fieldNames = Object.keys(schemaDef)
@@ -47,7 +47,7 @@ export const ArrayTable = ({ items, schema }) => {
 
     return (
       <>
-        {/* renderLectures(props) */}
+        {renderLectures({ errorText })}
         <Table numRows={items.length} defaultRowHeight={31}>
           {renderColumns({ items, subType, fieldNames })}
           <Column
@@ -59,5 +59,5 @@ export const ArrayTable = ({ items, schema }) => {
       </>
     )
   } else
-    return null
+    return renderLectures({ errorText })
 }
