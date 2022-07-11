@@ -22,7 +22,15 @@ export const GroupAdaptor = ({
   addWrapperProps
 }) => {
   if (inline) {
-    return children
+    return (
+      <div className={errorText && 'bp4-form-group bp4-intent-danger'}>
+        <div>{children}</div>
+        {
+          errorText &&
+            <div className="bp4-form-helper-text">{errorText}</div>
+        }
+      </div>
+    )
   } else {
     const label = typeof labelOverride != 'undefined' ?
       labelOverride : trField({ fieldSchema, schemaTypeName, field })
