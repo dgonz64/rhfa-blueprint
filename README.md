@@ -12,7 +12,7 @@ You can use `HTMLSelect` with `htmlSelect` field schema's `type`.
 
 ## Installation
 
-    $ npm install react-hook-form rhfa-blueprint @blueprintjs/core @blueprintjs/icons @blueprintjs/table @blueprintjs/select --save
+    $ npm install react-hook-form rhfa-blueprint @blueprintjs/core @blueprintjs/icons @blueprintjs/select --save
 
 ## Usage
 

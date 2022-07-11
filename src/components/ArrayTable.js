@@ -1,33 +1,28 @@
 import React from 'react'
 import { renderLectures } from './renderLectures'
 
-import { Column, Table, Cell } from '@blueprintjs/table'
+import { HTMLTable } from "@blueprintjs/core"
 
 import { trField } from 'react-hook-form-auto'
 
 const renderColumns = ({ items, subType, fieldNames }) => {
-  const someItem = items[0]
-
-  const createCellRenderer = (column, colIdx) => rowIdx => {
-    return (
-      <Cell key={column}>
-        {items[rowIdx].inputs[colIdx]}
-      </Cell>
-    )
-  }
-
   return fieldNames.map((columnName, colIdx) => {
     const displayName = trField(subType, columnName)
 
     return (
-      <Column
-        key={columnName}
-        name={displayName}
-        cellRenderer={createCellRenderer(columnName, colIdx)}
-      />
+      <th key={columnName}>
+        {displayName}
+      </th>
     )
   })
 }
+
+const renderRow = ({ item, subType, fieldNames }) =>
+  fieldNames.map((fieldName, colIdx) =>
+    <td key={colIdx}>
+      {item.inputs[colIdx]}
+    </td>
+  )
 
 export const ArrayTable = ({ items, schema, errorText }) => {
   const subType = schema.getType()
@@ -39,23 +34,33 @@ export const ArrayTable = ({ items, schema, errorText }) => {
       const { idx, closeButton } = items[rowIdx]
 
       return (
-        <Cell key="remove">
+        <td key="remove">
           {closeButton}
-        </Cell>
+        </td>
       )
     }
 
     return (
       <>
         {renderLectures({ errorText })}
-        <Table numRows={items.length} defaultRowHeight={31}>
-          {renderColumns({ items, subType, fieldNames })}
-          <Column
-            key="remove"
-            name=""
-            cellRenderer={renderRemove}
-          />
-        </Table>
+        <HTMLTable bordered>
+          <thead>
+            <tr>
+              {renderColumns({ items, subType, fieldNames })}
+              <th key="remove"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              items.map((item, rowIdx) =>
+                <tr key={item.childrenIdx}>
+                  {renderRow({ item, subType, fieldNames })}
+                  {renderRemove(rowIdx)}
+                </tr>
+              )
+            }
+          </tbody>
+        </HTMLTable>
       </>
     )
   } else

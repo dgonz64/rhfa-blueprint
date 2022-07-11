@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.4
+
+### Changed
+
+* Switched to `@blueprintjs/core` table to maintain simplicity.
+
+### Fixed
+
+* Validation problems in `ArrayTable` are now displayed
+
 ## 1.2.3
 
 ### Fixed
